@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./App.css";
 
 /**
@@ -47,9 +47,52 @@ function RoadmapProgressBar({ milestones }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalMilestone, setModalMilestone] = useState(null);
 
+  // Determine completed progress.
+  const numComplete = milestoneData.filter(m => m.status === "complete").length;
+  const progressPercent = Math.round((numComplete / milestoneData.length) * 100);
+
+  // Animation state for progress bar
+  const [animatedPercent, setAnimatedPercent] = useState(progressPercent);
+  const animationRef = useRef();
+
+  // Animate fill: when percent changes, animate a "filling" effect.
+  useEffect(() => {
+    const start = animatedPercent;
+    const end = progressPercent;
+    const duration = 680; // ms
+    if (start === end) return;
+
+    let startTs = null;
+    cancelAnimationFrame(animationRef.current);
+
+    function animate(ts) {
+      if (!startTs) startTs = ts;
+      const elapsed = ts - startTs;
+      let newPercent;
+      if (elapsed >= duration) {
+        newPercent = end;
+      } else {
+        // EaseInOutQuad
+        const t = elapsed / duration;
+        const eased = t < 0.5
+          ? 2 * t * t
+          : -1 + (4 - 2 * t) * t;
+        newPercent = Math.round(start + (end - start) * eased);
+      }
+
+      setAnimatedPercent(newPercent);
+
+      if (elapsed < duration && newPercent !== end) {
+        animationRef.current = requestAnimationFrame(animate);
+      }
+    }
+
+    animationRef.current = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animationRef.current);
+  }, [progressPercent]);
+
   // Helper for styling circles based on status
   const getMilestoneDotClass = (status) => {
-    // We'll use semantic class names but drive color via new CSS styling (modern palette)
     switch (status) {
       case "complete":
         return "roadmap-dot milestone-dot-complete";
@@ -110,6 +153,60 @@ function RoadmapProgressBar({ milestones }) {
 
   return (
     <div className="roadmap-progress-container" aria-label="Path of roadmap milestones">
+      {/* Animated percentage bar with label */}
+      <div className="progressbar-outer-track" style={{
+        width: "100%",
+        maxWidth: 420,
+        height: 17,
+        marginBottom: 16,
+        borderRadius: 9,
+        background: "linear-gradient(90deg, var(--bg-secondary), #e9ecf1 80%)",
+        boxShadow: "0 2px 11px rgba(41,121,255,0.055)",
+        position: "relative",
+        overflow: "hidden",
+        display: "flex",
+        alignItems: "center"
+      }}>
+        <div
+          className="progressbar-inner-fill"
+          style={{
+            position: "absolute",
+            left: 0,
+            top: 0,
+            height: "100%",
+            borderRadius: 9,
+            width: `${animatedPercent}%`,
+            background: "linear-gradient(90deg,var(--primary) 10%,var(--accent) 60%,var(--secondary) 100%)",
+            transition: "width 0.64s cubic-bezier(.61,1.38,.39,.82)",
+            boxShadow: animatedPercent > 3 ? "0 2px 9px rgba(41,121,255,0.075)" : "none",
+            zIndex: 2
+          }}
+          aria-valuenow={animatedPercent}
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-label="Progress bar for milestone completion"
+          role="progressbar"
+        />
+        <span
+          style={{
+            position: "absolute",
+            left: "50%",
+            top: "50%",
+            transform: "translate(-50%,-50%)",
+            color: "var(--text-primary)",
+            fontWeight: 700,
+            fontSize: "1.04em",
+            opacity: 0.97,
+            letterSpacing: "0.03em",
+            zIndex: 5,
+            userSelect: "none",
+            pointerEvents: "none"
+          }}
+        >
+          {animatedPercent}% Complete
+        </span>
+      </div>
+      {/* Milestone Circles Row */}
       <div
         className="roadmap-bar-flex"
         style={{
