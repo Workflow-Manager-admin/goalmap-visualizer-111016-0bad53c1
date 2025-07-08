@@ -211,13 +211,14 @@
 .roadmap-bar-flex {
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-end;
   width: 100%;
-  min-height: 34px;
   justify-content: space-between;
   margin-bottom: 12px;
   position: relative;
+  gap: 2px;
 }
+
 .roadmap-dot {
   width: 36px;
   height: 36px;
@@ -230,15 +231,19 @@
   box-shadow: 0 3px 16px rgba(0,191,174,0.07), 0 0px 0px #000;
   position: relative;
   transition: background 0.3s, box-shadow 0.3s;
+  font-size: 1.05em;
+  user-select: none;
 }
 .roadmap-dot-complete {
   background: linear-gradient(135deg, var(--primary), var(--accent));
   border-color: var(--primary);
+  color: #fff;
   box-shadow: 0 0 0 4px rgba(41,121,255,0.09);
 }
 .roadmap-dot-active {
   background: linear-gradient(135deg, var(--secondary), var(--accent));
   border-color: var(--secondary);
+  color: #fff;
   box-shadow: 0 0 0 5px rgba(255,179,0,0.13);
   outline: 3px solid var(--secondary);
   outline-offset: 2.5px;
@@ -256,48 +261,96 @@
   box-shadow: none;
 }
 .roadmap-segment {
-  flex: 1 1 45px;
+  flex: 1 1 22px;
+  min-width: 18px;
   height: 6px;
   background: linear-gradient(90deg, var(--accent) 30%, var(--primary) 80%);
   border-radius: 50px;
   margin: 0 0.9vw;
   opacity: 0.68;
   transition: background 0.36s;
+  align-self: center;
 }
 .roadmap-segment-complete {
   background: linear-gradient(90deg, var(--primary), var(--accent), var(--secondary));
   opacity: 1;
 }
 
-.roadmap-labels-flex {
+/* Milestone clickable cards/buttons */
+.roadmap-milestone-card {
   display: flex;
-  width: 100%;
-  justify-content: space-between;
-  margin-top: 2px;
+  flex-direction: column;
+  align-items: center;
+  background: none;
+  border: none;
+  box-shadow: none;
+  min-width: 52px;
+  max-width: 140px;
+  margin: 0 3px;
+  cursor: pointer;
+  outline: none;
+  padding: 0;
+  transition: transform 0.13s, box-shadow 0.15s;
 }
-.roadmap-label {
-  min-width: 58px;
+
+.roadmap-milestone-card:active,
+.roadmap-milestone-card:focus {
+  transform: scale(0.98);
+  z-index: 3;
+}
+
+.roadmap-milestone-card.milestone-active,
+.roadmap-milestone-card:focus-visible {
+  box-shadow: 0 3px 9px rgba(255,179,0,0.08), 0 0px 0px #000;
+  background: rgba(255,179,0,0.06);
+  border-radius: 13px;
+}
+
+.roadmap-milestone-card.milestone-complete:hover,
+.roadmap-milestone-card.milestone-active:hover {
+  background: rgba(41,121,255,0.09);
+}
+.roadmap-milestone-card.milestone-upcoming:hover {
+  background: rgba(41,121,255,0.05);
+}
+
+.milestone-label {
+  min-width: 38px;
+  max-width: 99px;
   text-align: center;
-  font-size: 1.08rem;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  margin: 0 2px;
+  font-size: 0.97rem;
+  font-weight: 500;
+  margin: 2px 0 0 0;
   color: var(--text-secondary);
+  letter-spacing: 0.01em;
+  transition: color 0.2s, font-weight 0.2s, opacity 0.2s;
+  word-break: break-word;
+  white-space: normal;
   opacity: 0.93;
-  transition: color 0.2s, opacity 0.2s, font-weight 0.2s;
+  background: none;
+  border: none;
 }
-.roadmap-label-complete {
+
+/* milestone status coloring for label */
+.milestone-label-complete {
   color: var(--primary);
   opacity: 1;
+  font-weight: 600;
 }
-.roadmap-label-active {
+
+.milestone-label-active {
   color: var(--secondary);
   opacity: 1;
   font-weight: 700;
   text-shadow: 0 3.5px 7px rgba(255,179,0,0.05);
 }
-.roadmap-label-upcoming { color: var(--text-secondary); opacity: 0.7; }
 
+.milestone-label-upcoming {
+  color: var(--text-secondary);
+  opacity: 0.68;
+}
+
+/* Responsive styling for milestones */
 @media (max-width: 768px) {
   .goal-roadmap-visual {
     max-width: 98vw;
@@ -310,13 +363,16 @@
     margin-bottom: 18px;
   }
   .roadmap-dot { width: 28px; height: 28px; }
-  .roadmap-label { font-size: 0.93rem; }
+  .milestone-label { font-size: 0.89rem; max-width: 68px;}
+  .roadmap-milestone-card { min-width: 36px; }
 }
 
 @media (max-width: 480px) {
   .goal-roadmap-visual { border-radius: 19px; }
   .roadmap-dot { width: 20px; height: 20px; }
   .roadmap-bar-flex { min-height: 18px; }
+  .milestone-label { font-size: 0.72rem; max-width: 40px; }
+  .roadmap-milestone-card { min-width: 22px; }
 }
 
 /* Timeline (footer) */
