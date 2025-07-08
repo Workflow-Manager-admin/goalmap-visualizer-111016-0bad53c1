@@ -49,23 +49,24 @@ function RoadmapProgressBar({ milestones }) {
 
   // Helper for styling circles based on status
   const getMilestoneDotClass = (status) => {
+    // We'll use semantic class names but drive color via new CSS styling (modern palette)
     switch (status) {
       case "complete":
-        return "roadmap-dot roadmap-dot-complete";
+        return "roadmap-dot milestone-dot-complete";
       case "active":
-        return "roadmap-dot roadmap-dot-active";
+        return "roadmap-dot milestone-dot-active";
       case "upcoming":
       default:
-        return "roadmap-dot roadmap-dot-upcoming";
+        return "roadmap-dot milestone-dot-pending";
     }
   };
 
   // Helper for milestone card styling
   const getMilestoneCardClass = (status) => {
-    let base = "roadmap-milestone-card";
-    if (status === "complete") return base + " milestone-complete";
-    if (status === "active") return base + " milestone-active";
-    return base + " milestone-upcoming";
+    const base = "roadmap-milestone-card";
+    if (status === "complete") return `${base} milestone-complete`;
+    if (status === "active") return `${base} milestone-inprogress`;
+    return `${base} milestone-pending`;
   };
 
   // PUBLIC_INTERFACE
