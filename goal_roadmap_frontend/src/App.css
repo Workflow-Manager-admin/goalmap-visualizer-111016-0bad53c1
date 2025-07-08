@@ -375,6 +375,100 @@
   .roadmap-milestone-card { min-width: 22px; }
 }
 
+/* Milestone Modal Styles */
+.milestone-modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(44,63,90,0.12);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: modalFadeIn 0.22s;
+  backdrop-filter: blur(2.5px);
+}
+@keyframes modalFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.milestone-modal {
+  background: var(--bg-primary);
+  box-shadow: 0 6px 28px rgba(41,121,255, 0.11), 0 1.5px 2.5px rgba(0,0,0,0.04);
+  border-radius: 22px;
+  padding: 38px 36px 28px 36px;
+  min-width: 295px;
+  max-width: 92vw;
+  min-height: 180px;
+  max-height: 86vh;
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  transition: box-shadow 0.22s;
+  overflow-y: auto;
+}
+
+.milestone-modal-close {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 2.3em;
+  position: absolute;
+  top: 12px;
+  right: 22px;
+  cursor: pointer;
+  z-index: 10;
+  transition: color 0.16s;
+}
+.milestone-modal-close:hover { color: var(--primary); }
+
+.milestone-modal-icon {
+  margin-bottom: 5px;
+  font-size: 2em;
+}
+.milestone-modal-title {
+  font-size: 1.13em;
+  font-weight: 700;
+  margin: 4px 0 10px 0;
+  text-align: center;
+  color: var(--primary);
+  letter-spacing: 0.01em;
+}
+.milestone-modal-desc {
+  font-size: 1.04em;
+  color: var(--text-secondary);
+  margin-bottom: 14px;
+  margin-top: 0;
+  text-align: center;
+  line-height: 1.45;
+}
+.milestone-modal-metadata {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  width: 100%;
+  margin-top: 3px;
+  font-size: 1em;
+  color: var(--text-primary);
+}
+.milestone-modal-meta-label {
+  color: var(--primary);
+  font-weight: 600;
+  margin-right: 7px;
+}
+@media (max-width: 600px) {
+  .milestone-modal {
+    min-width: 99vw;
+    max-width: 99vw;
+    padding: 23px 10vw 20px 10vw;
+    min-height: 0;
+  }
+  .milestone-modal-title { font-size: 1em; }
+  .milestone-modal-close { font-size: 2em; top: 6px; right: 12px; }
+  .milestone-modal-meta-label { font-size: 0.98em }
+}
+
 /* Timeline (footer) */
 .dashboard-timeline {
   height: var(--timeline-height);
