@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
+import RoadmapProgressBar from './RoadmapProgressBar';
 
 /**
  * PUBLIC_INTERFACE
@@ -50,11 +51,11 @@ function App() {
           </button>
         </header>
         <main className="dashboard-content">
-          {/* Replace with interactive roadmap in the future */}
-          <div className="empty-roadmap-state">
-            <span role="img" aria-label="map">🗺️</span>
-            <p>Start building your goal roadmap.<br />Add, organize, and visualize your goals here.</p>
-          </div>
+          {/* "My Goal Roadmap" visually prominent path section */}
+          <section className="goal-roadmap-visual">
+            <h2 className="goal-roadmap-title">My Goal Roadmap</h2>
+            <RoadmapProgressBar />
+          </section>
         </main>
         <footer className="dashboard-timeline">
           {/* Replace with interactive timeline in the future */}
